@@ -60,4 +60,5 @@ user_settings.json
 test_chroma_db/
 coverage/
 PROJECT_STATUS.md
+backend/static/audio/
 
