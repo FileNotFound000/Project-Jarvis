@@ -1,0 +1,63 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+*.venv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Database
+*.db
+*.sqlite3
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Mac OS
+.DS_Store
+
+# Frontend (redundant if frontend/.gitignore exists, but good for safety)
+node_modules/
+.next/
+# Backend specific
+chroma_db/
+user_settings.json
+test_chroma_db/
+coverage/
+PROJECT_STATUS.md
+
