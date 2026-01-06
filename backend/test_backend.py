@@ -3,7 +3,7 @@ import json
 
 url = "http://localhost:8000/chat"
 data = {
-    "message": "Calculate the 10th Fibonacci number using Python.",
+    "message": "research history of python programming",
     "session_id": "test_session"
 }
 
