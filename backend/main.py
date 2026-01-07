@@ -114,6 +114,16 @@ async def get_session(session_id: str):
 @app.delete("/sessions/{session_id}")
 async def delete_chat_session(session_id: str):
     delete_session(session_id)
+    
+    # Cleanup audio files for this session
+    session_audio_dir = os.path.join("static", "audio", session_id)
+    if os.path.exists(session_audio_dir) and session_id.strip(): # Check strip to avoid deleting root audio if empty
+        try:
+            shutil.rmtree(session_audio_dir)
+            print(f"Deleted audio content for session: {session_id}")
+        except Exception as e:
+            print(f"Failed to delete audio contents: {e}")
+            
     return {"message": "Session deleted"}
 
 @app.put("/sessions/{session_id}")
@@ -230,7 +240,7 @@ async def chat(message: str = Form(...), session_id: str = Form(...), file: Uplo
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 
 @app.post("/tts")
-async def text_to_speech(text: str = Form(...)):
+async def text_to_speech(text: str = Form(...), session_id: str = Form(None)):
     try:
         # Get voice from settings
         voice = "en-US-ChristopherNeural" # Default
@@ -250,7 +260,7 @@ async def text_to_speech(text: str = Form(...)):
             }
             voice = voice_map.get(user_voice, "en-US-ChristopherNeural")
 
-        audio_file = await generate_audio(text, voice)
+        audio_file = await generate_audio(text, voice, session_id=session_id)
         return {"audio_url": f"/static/audio/{audio_file}"}
     except Exception as e:
         print(f"TTS Error: {e}")

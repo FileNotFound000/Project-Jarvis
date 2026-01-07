@@ -237,6 +237,9 @@ export default function Home() {
     try {
       const formData = new FormData();
       formData.append("text", text);
+      if (currentSessionId) {
+        formData.append("session_id", currentSessionId);
+      }
       const res = await axios.post("http://localhost:8000/tts", formData);
       console.log("TTS Response:", res.data);
       if (res.data.audio_url) {
