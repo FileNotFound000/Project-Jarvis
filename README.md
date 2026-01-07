@@ -108,17 +108,17 @@
     ```
     Frontend will run at: `http://localhost:3000`
 
-## 📖 Usage Guide
+## Usage Guide
 
 -   **Voice Mode**: Click the "VOICE OFF" button in the top right to enable Wake Word detection. Say "Hey K" to start talking.
 -   **Research**: Start your query with "Research..." to trigger the autonomous agent (e.g., "Research the best gaming monitors in 2024").
 -   **System Commands**: Try saying "Open Notepad", "Set volume to 50%", or "Mute audio".
 -   **Memory**: Drag and drop text files into the chat to add them to the knowledge base.
 
-##  Roadmap & Status
+## Roadmap & Status
 Check [PROJECT_STATUS.md](./PROJECT_STATUS.md) for the latest tracking of features, bugs, and future plans.
 
-##  Contributing
+## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ##  License
