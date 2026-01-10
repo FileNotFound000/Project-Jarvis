@@ -1,6 +1,6 @@
 # Project Status: K AI Assistant
 
-**Last Updated**: 2026-01-06
+**Last Updated**: 2026-01-10
 
 > [!IMPORTANT]
 > **VIRTUAL ENVIRONMENT REQUIRED**
@@ -16,7 +16,10 @@ The application is fully functional with a robust set of features. The core chat
 - [x] **UI/UX**: Modern dark theme, responsive design, glassmorphism.
 - [x] **Voice Input**: Web Speech API integration.
 - [x] **Vision**: Image upload and analysis.
-- [x] **System Control**: Volume control, mute, app launching.
+- [x] **System Control**: Open apps, control volume, media playback, system power (sleep/shutdown), screen brightness, and window management.
+- **Deep System Control (Vision)**: "See" the screen and click UI elements by description (e.g., "Click the play button") using Gemini Vision.
+- **Model Flexibility**: Manual model selection in settings to handle rate limits (supports gemini-2.5-flash, etc.).
+- **Theme Support**: Dark/Light mode toggle.
 - [x] **Chat History**: Sidebar with session list, persistence in SQLite.
 - [x] **Session Management**: Create, Delete, and **Rename** chats.
 - [x] **Streaming**: Real-time text generation (SSE).
