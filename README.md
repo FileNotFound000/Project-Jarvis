@@ -3,7 +3,7 @@
 
 **Project K** is an advanced, locally-hosted AI assistant designed to be a "Second Brain" for your computer. It combines local LLM inference with autonomous web research, system control, and a futuristic voice interface.
 
-![Project K UI](https://via.placeholder.com/800x400?text=Project+K+Interface+Preview)
+
 
 ##  Key Features
 

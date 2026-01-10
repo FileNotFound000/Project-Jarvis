@@ -63,6 +63,11 @@ export const useVoiceInput = (): UseVoiceInputReturn => {
                 setTranscript(transcriptText);
             };
 
+            recognitionInstance.onerror = (event: any) => {
+                console.error("Main Recognition Error:", event.error);
+                setIsListening(false);
+            };
+
             setRecognition(recognitionInstance);
 
             // Cleanup
@@ -113,6 +118,13 @@ export const useVoiceInput = (): UseVoiceInputReturn => {
                     setTimeout(() => {
                         startListeningRef.current?.();
                     }, 250);
+                }
+            };
+
+            wakeInstance.onerror = (event: any) => {
+                // Ignore "no-speech" as it happens frequently in continuous mode
+                if (event.error !== "no-speech") {
+                    console.error("Wake Word Recognition Error:", event.error);
                 }
             };
 

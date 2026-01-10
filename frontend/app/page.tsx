@@ -433,8 +433,12 @@ export default function Home() {
                 }`}
               title={isWakeWordEnabled ? "Wake Word Active (Say 'Hey K')" : "Enable Wake Word"}
             >
-              <div className={`w-2 h-2 rounded-full ${isWakeWordEnabled ? (isWakeWordListening ? "bg-violet-400 animate-pulse" : "bg-violet-400") : "bg-neutral-600"}`} />
-              <span className="text-xs font-mono">{isWakeWordEnabled ? (isWakeWordListening ? "LISTENING..." : "ON STANDBY") : "VOICE OFF"}</span>
+              <div className={`w-2 h-2 rounded-full ${isWakeWordEnabled ? (isListening ? "bg-red-500 animate-pulse" : "bg-violet-400") : "bg-neutral-600"}`} />
+              <span className="text-xs font-mono">
+                {isWakeWordEnabled
+                  ? (isListening ? "RECORDING..." : "WAITING FOR 'K'")
+                  : "VOICE OFF"}
+              </span>
             </button>
 
             <div className="flex items-center gap-3 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
