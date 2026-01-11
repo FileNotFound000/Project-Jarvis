@@ -58,7 +58,17 @@ class SystemControlService:
         try:
             if self.system == "Windows":
                 # Simple startfile (works for registered apps and paths)
-                # For common apps, we might need a mapping or just try the name
+                # Special handling for opening folders in VS Code
+                if "code" in app_name.lower() and os.path.isdir(app_name.split()[-1]):
+                     # If the request is "code C:/path", execute it as a command
+                     os.system(app_name)
+                     return f"Running command: {app_name}"
+                
+                # Check if it's a folder path prompt
+                if os.path.isdir(app_name):
+                    os.startfile(app_name)
+                    return f"Opened folder: {app_name}"
+
                 os.startfile(app_name)
                 return f"Opening {app_name}"
             else:
@@ -142,6 +152,44 @@ class SystemControlService:
             return "Window maximized"
         return f"Unknown window action: {action}"
 
+    def write_file(self, path: str, content: str):
+        """
+        Write content to a file.
+        """
+        try:
+            # If path is just a filename, use CWD or a safe default? 
+            # Current CWD is usually .../backend. We want to write to Project Root.
+            if not os.path.isabs(path):
+                # Check settings for a custom workspace path
+                try:
+                    from app.services.settings import SettingsService
+                    settings = SettingsService().load_settings()
+                    workspace_path = settings.get("workspace_path")
+                    if workspace_path and os.path.isdir(workspace_path):
+                        path = os.path.join(workspace_path, path)
+                    else:
+                        # Fallback to smart project root detection
+                        cwd = os.getcwd()
+                        if os.path.basename(cwd) == "backend":
+                            base_path = os.path.dirname(cwd) # ../
+                            path = os.path.join(base_path, path)
+                        else:
+                            path = os.path.abspath(path)
+                except Exception:
+                     # Fallback if imports fail
+                    cwd = os.getcwd()
+                    if os.path.basename(cwd) == "backend":
+                        base_path = os.path.dirname(cwd)
+                        path = os.path.join(base_path, path)
+                    else:
+                        path = os.path.abspath(path)
+            
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(content)
+            return f"Successfully wrote to {path}"
+        except Exception as e:
+            return f"Error writing file: {e}"
+
     def interact(self, action: str, **kwargs):
         """
         Generic interaction: "type", "press", "hotkey"
@@ -149,7 +197,7 @@ class SystemControlService:
         try:
             if action == "type":
                 text = kwargs.get("text", "")
-                interval = kwargs.get("interval", 0.05)
+                interval = kwargs.get("interval", 0.005) # Faster typing
                 pyautogui.write(text, interval=interval)
                 return f"Typed: {text}"
             elif action == "press":

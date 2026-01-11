@@ -20,9 +20,11 @@ TOOLS:
 - read_url: Read content from a URL.
 - system_control: Control the system.
   Format: {"tool": "system_control", "args": {"action": "open_app", "app_name": "calculator"}}
+  Format: {"tool": "system_control", "args": {"action": "open_app", "app_name": "code ."}} (Open VS Code in current folder)
   Format: {"tool": "system_control", "args": {"action": "set_volume", "level": 50}}
   Format: {"tool": "system_control", "args": {"action": "mute"}}
   Format: {"tool": "system_control", "args": {"action": "unmute"}}
+  Format: {"tool": "system_control", "args": {"action": "write_file", "path": "hello.py", "content": "print('Hello')"}}
   Format: {"tool": "system_control", "args": {"action": "screenshot"}}
   Format: {"tool": "system_control", "args": {"action": "media", "action_type": "play_pause"}}  (Options: play_pause, next, prev, stop)
   Format: {"tool": "system_control", "args": {"action": "power", "action_type": "sleep"}}  (Options: shutdown, restart, sleep, lock)
@@ -43,7 +45,9 @@ CRITICAL RULES:
 6. CRITICAL: Output the JSON command at the END of your response. Do NOT output anything after the JSON. Do NOT simulate the tool output.
 7. INTERACTION RULE: If the user asks you to "perform" something IN an app (e.g. "Calculate in Calculator", "Write in Notepad"), you must OPEN the app and then USE `interact` to type/press keys. Do NOT just calculate it yourself.
    - Correct: Open Calculator -> interact(type="128*4") -> interact(press="enter")
+   - Correct: Open Calculator -> interact(type="128*4") -> interact(press="enter")
    - Incorrect: Open Calculator -> "The answer is 512."
+8. WRITING RULE: If asked to write an essay or long text via `system_control` (type), generate the FULL text. Typing is instant. Do not summarize or output "Simulating writing...". Output the actual text in the `text` argument.
 """
 
 class AgentService:
@@ -449,6 +453,13 @@ class AgentService:
                                         accumulated_response += f"\n\n*Unmuting volume...*\n\n"
                                         self.system_control.set_mute(False)
                                         output_str = "Success: Volume has been unmuted."
+
+                                    elif action == "write_file":
+                                        path = tool_args.get("path")
+                                        content = tool_args.get("content")
+                                        yield {"text": f"\n\n*Writing file {path}...*\n\n"}
+                                        accumulated_response += f"\n\n*Writing file {path}...*\n\n"
+                                        output_str = self.system_control.write_file(path, content)
                                     
                                     elif action == "screenshot":
                                         yield {"text": f"\n\n*Taking screenshot...*\n\n"}
