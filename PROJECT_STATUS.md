@@ -17,6 +17,7 @@ The application is fully functional with a robust set of features. The core chat
 - [x] **Voice Input**: Web Speech API integration.
 - [x] **Vision**: Image upload and analysis.
 - [x] **System Control**: Open apps, control volume, media playback, system power (sleep/shutdown), screen brightness, window management, and **high-speed text entry** (e.g. writing essays).
+- [x] **Coding Companion**: Agent can **read**, **write**, **list**, and **patch** files directly.
 - **Deep System Control (Vision)**: "See" the screen and click UI elements by description (e.g., "Click the play button") using Gemini Vision.
 - **Model Flexibility**: Manual model selection in settings to handle rate limits (supports gemini-2.5-flash, etc.).
 - **Theme Support**: Dark/Light mode toggle.

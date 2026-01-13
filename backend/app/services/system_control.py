@@ -190,6 +190,121 @@ class SystemControlService:
         except Exception as e:
             return f"Error writing file: {e}"
 
+    def read_file(self, path: str):
+        """Read content from a file."""
+        try:
+             # Normalize path logic (reuse write_file logic if possible, or duplicate for safety)
+            if not os.path.isabs(path):
+                 # Smart fallback logic
+                 try:
+                    from app.services.settings import SettingsService
+                    settings = SettingsService().load_settings()
+                    workspace_path = settings.get("workspace_path")
+                    if workspace_path and os.path.isdir(workspace_path):
+                         path = os.path.join(workspace_path, path)
+                    else:
+                        cwd = os.getcwd()
+                        if os.path.basename(cwd) == "backend":
+                            base_path = os.path.dirname(cwd)
+                            path = os.path.join(base_path, path)
+                        else:
+                            path = os.path.abspath(path)
+                 except:
+                    cwd = os.getcwd()
+                    if os.path.basename(cwd) == "backend":
+                         path = os.path.join(os.path.dirname(cwd), path)
+                    else:
+                         path = os.path.abspath(path)
+
+            if not os.path.exists(path):
+                return f"Error: File not found at {path}"
+            
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read()
+        except Exception as e:
+            return f"Error reading file: {e}"
+
+    def list_files(self, path: str = "."):
+        """List files in a directory."""
+        try:
+            # Normalize path
+            if not os.path.isabs(path):
+                 try:
+                    from app.services.settings import SettingsService
+                    settings = SettingsService().load_settings()
+                    workspace_path = settings.get("workspace_path")
+                    if workspace_path and os.path.isdir(workspace_path):
+                         path = os.path.join(workspace_path, path)
+                    else:
+                        cwd = os.getcwd()
+                        if os.path.basename(cwd) == "backend":
+                            base_path = os.path.dirname(cwd)
+                            path = os.path.join(base_path, path)
+                        else:
+                            path = os.path.abspath(path)
+                 except:
+                     pass # default to abs path or cwd
+
+            if not os.path.exists(path):
+                return f"Error: Directory not found at {path}"
+                
+            items = os.listdir(path)
+            # Add type info
+            result = []
+            for item in items:
+                full_item = os.path.join(path, item)
+                kind = "DIR" if os.path.isdir(full_item) else "FILE"
+                result.append(f"[{kind}] {item}")
+            return "\n".join(result)
+        except Exception as e:
+            return f"Error listing files: {e}"
+
+    def replace_text(self, path: str, search_text: str, replace_text: str):
+        """Replace text in a file."""
+        try:
+            content = self.read_file(path)
+            if content.startswith("Error"):
+                return content
+            
+            if search_text not in content:
+                return "Error: Search text not found in file."
+            
+            new_content = content.replace(search_text, replace_text)
+            
+            # Reuse logic to get absolute path for writing
+            # For simplicity, since read_file succeeded, we can probably trust the path resolution inside read_file 
+            # BUT read_file resolved it internally. We need to resolve it again OR extract the resolution logic.
+            # To be safe, let's just use the same resolution logic.
+            
+            # ... (Full resolution logic again) ...
+            if not os.path.isabs(path):
+                 try:
+                    from app.services.settings import SettingsService
+                    settings = SettingsService().load_settings()
+                    workspace_path = settings.get("workspace_path")
+                    if workspace_path and os.path.isdir(workspace_path):
+                         path = os.path.join(workspace_path, path)
+                    else:
+                        cwd = os.getcwd()
+                        if os.path.basename(cwd) == "backend":
+                            base_path = os.path.dirname(cwd)
+                            path = os.path.join(base_path, path)
+                        else:
+                             path = os.path.abspath(path)
+                 except:
+                    cwd = os.getcwd()
+                    if os.path.basename(cwd) == "backend":
+                         path = os.path.join(os.path.dirname(cwd), path)
+                    else:
+                         path = os.path.abspath(path)
+
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(new_content)
+                
+            return "Successfully replaced text."
+        except Exception as e:
+            return f"Error replacing text: {e}"
+
     def interact(self, action: str, **kwargs):
         """
         Generic interaction: "type", "press", "hotkey"

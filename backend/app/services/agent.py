@@ -25,6 +25,9 @@ TOOLS:
   Format: {"tool": "system_control", "args": {"action": "mute"}}
   Format: {"tool": "system_control", "args": {"action": "unmute"}}
   Format: {"tool": "system_control", "args": {"action": "write_file", "path": "hello.py", "content": "print('Hello')"}}
+  Format: {"tool": "system_control", "args": {"action": "read_file", "path": "hello.py"}}
+  Format: {"tool": "system_control", "args": {"action": "list_files", "path": "."}}
+  Format: {"tool": "system_control", "args": {"action": "replace_text", "path": "hello.py", "search_text": "Hello", "replace_text": "World"}}
   Format: {"tool": "system_control", "args": {"action": "screenshot"}}
   Format: {"tool": "system_control", "args": {"action": "media", "action_type": "play_pause"}}  (Options: play_pause, next, prev, stop)
   Format: {"tool": "system_control", "args": {"action": "power", "action_type": "sleep"}}  (Options: shutdown, restart, sleep, lock)
@@ -460,6 +463,26 @@ class AgentService:
                                         yield {"text": f"\n\n*Writing file {path}...*\n\n"}
                                         accumulated_response += f"\n\n*Writing file {path}...*\n\n"
                                         output_str = self.system_control.write_file(path, content)
+
+                                    elif action == "read_file":
+                                        path = tool_args.get("path")
+                                        yield {"text": f"\n\n*Reading file {path}...*\n\n"}
+                                        accumulated_response += f"\n\n*Reading file {path}...*\n\n"
+                                        output_str = self.system_control.read_file(path)
+                                    
+                                    elif action == "list_files":
+                                        path = tool_args.get("path", ".")
+                                        yield {"text": f"\n\n*Listing files in {path}...*\n\n"}
+                                        accumulated_response += f"\n\n*Listing files in {path}...*\n\n"
+                                        output_str = self.system_control.list_files(path)
+
+                                    elif action == "replace_text":
+                                        path = tool_args.get("path")
+                                        search_text = tool_args.get("search_text")
+                                        replace_text = tool_args.get("replace_text")
+                                        yield {"text": f"\n\n*Patching file {path}...*\n\n"}
+                                        accumulated_response += f"\n\n*Patching file {path}...*\n\n"
+                                        output_str = self.system_control.replace_text(path, search_text, replace_text)
                                     
                                     elif action == "screenshot":
                                         yield {"text": f"\n\n*Taking screenshot...*\n\n"}
