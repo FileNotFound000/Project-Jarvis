@@ -19,7 +19,7 @@ import shutil
 load_dotenv()
 
 import sys
-with open(r"d:\experimenting with antigravity\backend\env_info.txt", "w") as f:
+with open("env_info.txt", "w") as f:
     f.write(f"Executable: {sys.executable}\n")
     f.write(f"Path: {sys.path}\n")
 
