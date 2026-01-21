@@ -18,6 +18,8 @@ TOOLS:
   Format: {"tool": "execute_python", "args": {"code": "print('hello')"}}
 - google_search: Search the web.
   Format: {"tool": "google_search", "args": {"query": "weather in Tokyo"}}
+- search_youtube: Search YouTube for a video.
+  Format: {"tool": "search_youtube", "args": {"query": "song name", "action": "play"}}
 - read_url: Read content from a URL.
   Format: {"tool": "read_url", "args": {"url": "https://example.com"}}
 - system_control: Control the system.
@@ -53,6 +55,11 @@ CRITICAL RULES:
    - Correct: Open Calculator -> interact(type="128*4") -> interact(press="enter")
    - Incorrect: Open Calculator -> "The answer is 512."
 8. WRITING RULE: If asked to write an essay or long text via `system_control` (type), generate the FULL text. Typing is instant. Do not summarize or output "Simulating writing...". Output the actual text in the `text` argument.
+   - Correct: Open Calculator -> interact(type="128*4") -> interact(press="enter")
+   - Incorrect: Open Calculator -> "The answer is 512."
+8. WRITING RULE: If asked to write an essay or long text via `system_control` (type), generate the FULL text. Typing is instant. Do not summarize or output "Simulating writing...". Output the actual text in the `text` argument.
+9. MEDIA RULE: To open/play something on YouTube, use the `search_youtube` tool. This will find the direct video link.
+   - Correct: {"tool": "search_youtube", "args": {"query": "song name", "action": "play"}}
 """
 
 class AgentService:
@@ -544,6 +551,28 @@ class AgentService:
                                     output_str = f"Search Results:\n{results}"
                                 except Exception as e:
                                     output_str = f"Error performing search: {e}"
+
+                            elif tool_name == "search_youtube":
+                                query = tool_args.get("query")
+                                action = tool_args.get("action", "play")
+                                yield {"text": f"\n\n*Searching YouTube for '{query}'...*\n\n"}
+                                accumulated_response += f"\n\n*Searching YouTube for '{query}'...*\n\n"
+                                
+                                try:
+                                    from app.services.search import get_first_youtube_video
+                                    video_url = get_first_youtube_video(query)
+                                    
+                                    if video_url:
+                                        # Directly open it using system control
+                                        if self.system_control:
+                                            self.system_control.open_application(video_url)
+                                            output_str = f"Found and opening video: {video_url}"
+                                        else:
+                                            output_str = f"Found video: {video_url} (System control unavailable to open)"
+                                    else:
+                                        output_str = "No video found."
+                                except Exception as e:
+                                    output_str = f"Error searching YouTube: {e}"
 
                             elif tool_name == "read_url":
                                 url = tool_args.get("url")
