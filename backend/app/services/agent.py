@@ -42,6 +42,9 @@ TOOLS:
   Format: {"tool": "system_control", "args": {"action": "interact", "action_type": "press", "key": "enter"}}
 - click_on_ui: Click a UI element by description.
   Format: {"tool": "click_on_ui", "args": {"description": "the blue submit button"}}
+- execute_workflow: Execute a system macro/preset.
+  Format: {"tool": "execute_workflow", "args": {"name": "work_mode"}}
+  Available Workflows: work_mode, gaming_mode, focus_mode, sleep_mode
 
 CRITICAL RULES:
 1. To use a tool, you MUST output the JSON command.
@@ -96,6 +99,16 @@ class AgentService:
         except Exception as e:
             print(f"Failed to init vision service: {e}")
             self.vision_service = None
+
+        try:
+            from app.services.workflow_service import WorkflowService
+            if self.system_control:
+                self.workflow_service = WorkflowService(self.system_control)
+            else:
+                self.workflow_service = None
+        except Exception as e:
+            print(f"Failed to init workflow service: {e}")
+            self.workflow_service = None
             
         self._configure()
 
@@ -551,6 +564,19 @@ class AgentService:
                                     output_str = f"Search Results:\n{results}"
                                 except Exception as e:
                                     output_str = f"Error performing search: {e}"
+
+                            elif tool_name == "execute_workflow":
+                                name = tool_args.get("name")
+                                yield {"text": f"\n\n*Activating Protocol: {name}...*\n\n"}
+                                accumulated_response += f"\n\n*Activating Protocol: {name}...*\n\n"
+                                
+                                if self.workflow_service:
+                                    try:
+                                        output_str = await self.workflow_service.execute_workflow(name)
+                                    except Exception as e:
+                                        output_str = f"Error executing workflow: {e}"
+                                else:
+                                    output_str = "Error: Workflow Service not available (System Control might be down)."
 
                             elif tool_name == "search_youtube":
                                 query = tool_args.get("query")
