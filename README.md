@@ -1,51 +1,46 @@
 # Project K
 > *Formerly known as Project Jarvis / Aether*
 
-**Project K** is an advanced, locally-hosted AI assistant designed to be a "Second Brain" for your computer. It combines local LLM inference with autonomous web research, system control, and a futuristic voice interface.
+**Project K** is an advanced, locally-hosted AI assistant designed to be a "Second Brain" for your computer. It combines local LLM inference with autonomous web research, system control, computer vision, and a futuristic voice interface.
 
+## Key Features
 
+- **Local & Private Intelligence**
+  - Powered by **Ollama** (supports Llama 3, Mistral) or **Gemini 2.5 Flash**.
+  - **Second Brain (RAG)**: Ingest, search, and forget local files (PDF, Code, Text).
+  - **Memory**: Persistent long-term memory of user preferences and facts.
 
-##  Key Features
-
-- ** Local & Private Intelligence**
-  - Powered by **Ollama** (supports Llama 3, Mistral, Gemma, etc.).
-  - No data leaves your machine unless you explicitly use web search features.
-
-- ** "Always-On" Voice Interface**
-  - **Wake Word**: Just say **"Hey K"** (or "Computer") to activate.
-  - **Neural TTS**: High-quality, natural-sounding voice output using Edge TTS.
-  - **Fluid Conversation**: Talk naturally without needing to press buttons.
+- **"Always-On" Voice Interface**
+  - **Wake Word**: Just say **"Karan"**, **"Computer"**, or **"Jarvis"** (Powered by Vosk Offline).
+  - **Interactive Mode**: Replies "Yes Boss" and listens for commands.
+  - **Smart Media**: "Play [Song] on YouTube" plays directly (no search results).
 
 - ** Deep Research Agent**
   - Recursive web research capabilities.
   - Can search the web, scrape content, and synthesize comprehensive reports on complex topics.
   - Usage: *"Research the history of quantum computing"*
 
-- ** RAG (Retrieval Augmented Generation)**
-  - **"Chat with your Data"**: Upload documents (PDF, TXT, etc.) to your knowledge base.
-  - The assistant remembers context and retrieves relevant information from your files.
+- **Deep System Control**
+  - **Macros ("Jarvis Protocols")**: Trigger complex setups (Work/Game/Sleep) with one command.
+  - **Automation**: Open apps, control volume/media/brightness/power.
+  - **High-Speed Typing**: Dictate essays or code directly into apps.
 
-- ** System Control**
-  - Control your PC directly via chat or voice.
-  - **Capabilities**: Set volume, mute/unmute, open applications, take screenshots, and more.
+- **Deep Research Agent**
+  - Recursive web research with unicode support.
+  - Synthesizes comprehensive reports from multiple sources.
 
-- ** Autonomous Coding Agent** [NEW]
+- **Autonomous Coding Agent**
   - **Read & Write**: Can read your project files and create new code files.
   - **Patch & Fix**: Can surgically edit files to fix bugs or add features.
-  - **VS Code Integration**: Can launch VS Code and manipulate your workspace.
 
-- ** Futuristic UI**
-  - Built with **Next.js 14**, **Tailwind CSS**, and **Framer Motion**.
-  - Features a dynamic "Orb" visualizer that reacts to speaking and listening states.
-
-##  Tech Stack
+## Tech Stack
 
 ### Backend
 - **Framework**: FastAPI (Python)
-- **AI Orchestration**: LangChain
-- **Vector DB**: ChromaDB (for RAG/Memory)
-- **Search**: DuckDuckGo / Custom Scraper
-- **Audio**: Edge TTS
+- **AI Orchestration**: Custom Agent (ReAct Loop)
+- **Vision**: Gemini 1.5/2.0 Flash
+- **Vector DB**: ChromaDB (RAG)
+- **Speech**: Vosk (STT) + Edge TTS
 
 ### Frontend
 - **Framework**: Next.js (React / TypeScript)
@@ -58,8 +53,8 @@
 ### Prerequisites
 - **Python** 3.10+
 - **Node.js** 18+
-- **Gemini Api Key** Google AI Studio
-- **Ollama** installed and running locally.
+- **Gemini API Key** (Google AI Studio)
+- **Ollama** (Optional, for local inference)
 
 ### Installation
 
@@ -92,36 +87,29 @@
 
 ### Running the Application
 
-1.  **Start Ollama**
-    Ensure Ollama is running and you have a model pulled (default is usually `llama3` or `mistral`).
+1.  **Start Backend**
     ```bash
-    ollama serve
-    # In another terminal: ollama pull llama3
-    ```
-
-2.  **Start Backend Server**
-    ```bash
-    # From /backend directory
+    cd backend
     uvicorn main:app --reload
     ```
-    Backend will run at: `http://localhost:8000`
+    *Server: http://localhost:8000*
 
-3.  **Start Frontend Client**
+2.  **Start Frontend**
     ```bash
-    # From /frontend directory
+    cd frontend
     npm run dev
     ```
-    Frontend will run at: `http://localhost:3000`
+    *Client: http://localhost:3000*
 
 ## Usage Guide
 
--   **Voice Mode**: Click the "VOICE OFF" button in the top right to enable Wake Word detection. Say "Hey K" to start talking.
--   **Research**: Start your query with "Research..." to trigger the autonomous agent (e.g., "Research the best gaming monitors in 2024").
--   **System Commands**: Try saying "Open Notepad", "Set volume to 50%", or "Mute audio".
--   **Memory**: Drag and drop text files into the chat to add them to the knowledge base.
+-   **Voice Mode**: Toggle "VOICE OFF" -> "VOICE ON". Say **"Computer"** to wake.
+-   **Macros**: "Activate Work Mode" (VS Code + Spotify).
+-   **Second Brain**: "Memorize `plan.pdf`", then "What's in the plan?".
+-   **Vision**: "Click the [Description]".
 
 ## Roadmap & Status
-Check [PROJECT_STATUS.md](./PROJECT_STATUS.md) for the latest tracking of features, bugs, and future plans.
+Check [PROJECT_STATUS.md](./PROJECT_STATUS.md) for the latest tracking.
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.

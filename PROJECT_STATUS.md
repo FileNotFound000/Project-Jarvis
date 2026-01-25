@@ -18,27 +18,16 @@ The application is fully functional with a robust set of features. The core chat
 - [x] **Vision**: Image upload and analysis.
 - [x] **System Control**: Open apps, control volume, media playback, system power (sleep/shutdown), screen brightness, window management, and **high-speed text entry** (e.g. writing essays).
 - [x] **Coding Companion**: Agent can **read**, **write**, **list**, and **patch** files directly.
-- **Deep System Control (Vision)**: "See" the screen and click UI elements by description (e.g., "Click the play button") using Gemini Vision.
-- **Model Flexibility**: Manual model selection in settings to handle rate limits (supports gemini-2.5-flash, etc.).
-- **Theme Support**: Dark/Light mode toggle.
-- [x] **Chat History**: Sidebar with session list, persistence in SQLite.
-- [x] **Session Management**: Create, Delete, and **Rename** chats.
-- [x] **Streaming**: Real-time text generation (SSE).
-- [x] **On-Demand TTS**: Speaker icon with Play/Stop/Loading states.
-- [x] **"Second Brain" / RAG**: Local file search and context.
-- [x] **Autonomous Research**: Web browsing agent.
-- [x] **Code Interpreter**: Python execution sandbox with Jupyter kernel.
-- [x] **Settings Page**: Configure API keys, voices, and themes.
-- [x] **Theme Contrast**: Fixed Light Mode text visibility issues.
-- [x] **Memory Reliability**: Fixed deduplication, hallucinations, and persistence issues.
-- [x] **UI Polish**: Hidden internal JSON commands from chat.
-- [x] **Deep Research Loop**: Recursive search and reasoning not just single-shot.
+- [x] **Desktop Vision**: "See" the screen and click UI elements by description (e.g., "Click the play button") using Gemini Vision.
+- [x] **Voice Commander**: Wake word detection ("Karan", "Computer") using VOSK (Offline).
+- [x] **Workflow Macros**: "The Jarvis Protocol" - Single command to trigger multi-app setups (Work/Game/Sleep modes).
+- [x] **Second Brain (RAG)**: Ingest, Search, and Forget local files (PDF, Code, Text) using ChromaDB.
+- [x] **Smart Media**: Direct YouTube playback and App control.
 
 ## Next Steps (Future Ideas)
-- [ ] **Always-On Voice**: Wake word detection.
-- [ ] **Dashboard UI**: Widgets and media controls.
-- [ ] **Desktop Vision**: Screen analysis.
-- [ ] **Workflow Automations**: Simple IFTTT style rules.
+- [ ] **Desktop Janitor**: Autonomous file cleanup agent.
+- [ ] **Dashboard UI**: Visual widgets for system state.
+- [ ] **Always-On Voice**: Service mode optimization.
 
 ## Known Issues
 None at this time. System is stable. 
