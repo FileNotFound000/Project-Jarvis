@@ -30,7 +30,7 @@ The application is fully functional with a robust set of features. The core chat
 - [ ] **Always-On Voice**: Service mode optimization.
 
 ## Known Issues
-None at this time. System is stable. 
+Research is full of codec errors and no meaningful reports.
 
 
 
